@@ -1,0 +1,2 @@
+dotnet ef migrations add InitialCreate --context ApplicationDbContext --project OnionArchitecture.TaskManager.Infrastructure.csproj
+dotnet ef database update
