@@ -25,6 +25,7 @@ namespace OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.Use
                 Name = command.Name,
                 Login = command.Login,
                 FirstName = command.FirstName,
+                Token = Guid.NewGuid().ToString(),
                 CreatedAt = DateTime.Now,
                 CreatedBy = 1,
                 ModifiedAt = DateTime.Now,

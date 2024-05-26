@@ -61,9 +61,9 @@ namespace OnionArchitecture.TaskManager.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int projectId)
         {
-            var query = new GetAllProjectTasksQuery();
+            var query = new GetAllProjectTasksQuery { ProjectId = projectId };
             var result = await _getAllHandler.Handle(query);
             return Ok(result);
         }
