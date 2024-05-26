@@ -8,8 +8,8 @@ namespace OnionArchitecture.TaskManager.Application.Features.Commands.Project
 {
     public class CreateProjectCommand
     {
-        public int ProjectId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public required int ProjectId { get; set; }
+        public required string Name { get; set; }
+        public required string Description { get; set; }
     }
 }

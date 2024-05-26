@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnionArchitecture.TaskManager.Application.DTOs;
 using OnionArchitecture.TaskManager.Application.Features.Commands.Project;
 using OnionArchitecture.TaskManager.Application.Features.Queries.Project;
 using OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.Project;
 using OnionArchitecture.TaskManager.Application.Handlers.QueryHandlers.Project;
-using OnionArchitecture.TaskManager.Application.Interfaces;
-using OnionArchitecture.TaskManager.Application.Services;
-using OnionArchitecture.TaskManager.Core.Models;
 
 namespace OnionArchitecture.TaskManager.API.Controllers
 {
@@ -18,8 +14,6 @@ namespace OnionArchitecture.TaskManager.API.Controllers
         private readonly DeleteProjectCommandHandler _deleteHandler;
         private readonly GetProjectByIdQueryHandler _getByIdHandler;
         private readonly GetAllProjectsQueryHandler _getAllHandler;
-
-        private readonly IProjectService _projectService;
 
         public ProjectsController(
             CreateProjectCommandHandler createHandler,
@@ -36,23 +30,15 @@ namespace OnionArchitecture.TaskManager.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProjectDTO projectDto)
+        public async Task<IActionResult> Create(CreateProjectCommand command)
         {
-            var command = new CreateProjectCommand
-            {
-                Name = projectDto.Name
-            };
             await _createHandler.Handle(command);
             return Ok();
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(ProjectDTO projectDto)
+        public async Task<IActionResult> Update(UpdateProjectCommand command)
         {
-            var command = new UpdateProjectCommand
-            {
-                 Id = projectDto.Id
-            };
             await _updateHandler.Handle(command);
             return Ok();
         }

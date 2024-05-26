@@ -1,10 +1,10 @@
 
 using Microsoft.EntityFrameworkCore;
 using OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.Project;
-using OnionArchitecture.TaskManager.Application.Handlers.QueryHandlers.Project;
 using OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.ProjectTask;
-using OnionArchitecture.TaskManager.Application.Handlers.QueryHandlers.ProjectTask;
 using OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.User;
+using OnionArchitecture.TaskManager.Application.Handlers.QueryHandlers.Project;
+using OnionArchitecture.TaskManager.Application.Handlers.QueryHandlers.ProjectTask;
 using OnionArchitecture.TaskManager.Application.Handlers.QueryHandlers.User;
 using OnionArchitecture.TaskManager.Application.Interfaces;
 using OnionArchitecture.TaskManager.Application.Services;

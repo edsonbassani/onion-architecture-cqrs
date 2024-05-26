@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnionArchitecture.TaskManager.Application.DTOs;
 using OnionArchitecture.TaskManager.Application.Features.Commands.ProjectTask;
 using OnionArchitecture.TaskManager.Application.Features.Queries.ProjectTask;
 using OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.ProjectTask;
@@ -31,36 +30,15 @@ namespace OnionArchitecture.TaskManager.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProjectTaskDTO projectTaskDto)
+        public async Task<IActionResult> Create(CreateProjectTaskCommand command)
         {
-            var command = new CreateProjectTaskCommand
-            { 
-              Name = projectTaskDto.Name,
-              ProjectId = projectTaskDto.ProjectId,
-              Assignment = projectTaskDto.Assignment,
-              CompletionDate = projectTaskDto.CompletionDate,
-              DueDate = projectTaskDto.DueDate,
-              ParentTaskId = projectTaskDto.ParentTaskId,
-              StartDate = projectTaskDto.StartDate
-            };
             await _createHandler.Handle(command);
             return Ok();
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(ProjectTaskDTO projectTaskDto)
+        public async Task<IActionResult> Update(UpdateProjectTaskCommand command)
         {
-            var command = new UpdateProjectTaskCommand
-            {
-                Id = projectTaskDto.Id,
-                Name = projectTaskDto.Name,
-                ProjectId = projectTaskDto.ProjectId,
-                Assignment = projectTaskDto.Assignment,
-                CompletionDate = projectTaskDto.CompletionDate,
-                DueDate = projectTaskDto.DueDate,
-                ParentTaskId = projectTaskDto.ParentTaskId,
-                StartDate = projectTaskDto.StartDate
-            };
             await _updateHandler.Handle(command);
             return Ok();
         }
@@ -76,7 +54,7 @@ namespace OnionArchitecture.TaskManager.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var query = new GetProjectTaskByIdQuery {  Id = id };
+            var query = new GetProjectTaskByIdQuery { Id = id };
             var result = await _getByIdHandler.Handle(query);
             if (result == null) return NotFound();
             return Ok(result);

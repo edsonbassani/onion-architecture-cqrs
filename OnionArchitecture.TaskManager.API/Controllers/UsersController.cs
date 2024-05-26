@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnionArchitecture.TaskManager.Application.DTOs;
 using OnionArchitecture.TaskManager.Application.Features.Commands.User;
 using OnionArchitecture.TaskManager.Application.Features.Queries.User;
 using OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.User;
 using OnionArchitecture.TaskManager.Application.Handlers.QueryHandlers.User;
-using OnionArchitecture.TaskManager.Application.Interfaces;
 
 namespace OnionArchitecture.TaskManager.API.Controllers
 {
@@ -32,26 +30,15 @@ namespace OnionArchitecture.TaskManager.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(UserDTO userDto)
+        public async Task<IActionResult> Create(CreateUserCommand command)
         {
-            var command = new CreateUserCommand
-            {
-                Name = userDto.Name
-            };
             await _createHandler.Handle(command);
             return Ok();
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(UserDTO userDto)
+        public async Task<IActionResult> Update(UpdateUserCommand command)
         {
-            var command = new UpdateUserCommand
-            {
-                Id = userDto.Id,
-                Name = userDto.Name,
-                FirstName = userDto.FirstName,
-                Login = userDto.Login
-            };
             await _updateHandler.Handle(command);
             return Ok();
         }
