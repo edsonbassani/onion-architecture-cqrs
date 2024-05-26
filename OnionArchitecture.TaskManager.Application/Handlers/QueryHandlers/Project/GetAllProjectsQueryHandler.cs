@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace OnionArchitecture.TaskManager.Application.Handlers.QueryHandlers.Project
 {
-    public class GetAllProjectQueryHandler
+    public class GetAllProjectsQueryHandler
     {
         private readonly IProjectService _projectService;
 
-        public GetAllProjectQueryHandler(IProjectService projectService)
+        public GetAllProjectsQueryHandler(IProjectService projectService)
         {
             _projectService = projectService;
         }

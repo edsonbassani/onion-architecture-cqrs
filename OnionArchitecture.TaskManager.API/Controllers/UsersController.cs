@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnionArchitecture.TaskManager.Application.DTOs;
+using OnionArchitecture.TaskManager.Application.Features.Commands.User;
+using OnionArchitecture.TaskManager.Application.Features.Queries.User;
+using OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.User;
+using OnionArchitecture.TaskManager.Application.Handlers.QueryHandlers.User;
 using OnionArchitecture.TaskManager.Application.Interfaces;
 
 namespace OnionArchitecture.TaskManager.API.Controllers
@@ -7,40 +11,71 @@ namespace OnionArchitecture.TaskManager.API.Controllers
     [Route("api/[controller]")]
     public class UsersController : Controller
     {
-        private readonly IUserService _userService;
+        private readonly CreateUserCommandHandler _createHandler;
+        private readonly UpdateUserCommandHandler _updateHandler;
+        private readonly DeleteUserCommandHandler _deleteHandler;
+        private readonly GetUserByIdQueryHandler _getByIdHandler;
+        private readonly GetAllUsersQueryHandler _getAllHandler;
 
-        public UsersController(IUserService userService)
+        public UsersController(
+            CreateUserCommandHandler createHandler,
+            UpdateUserCommandHandler updateHandler,
+            DeleteUserCommandHandler deleteHandler,
+            GetUserByIdQueryHandler getByIdHandler,
+            GetAllUsersQueryHandler getAllHandler)
         {
-            _userService = userService;
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserById(int id)
-        {
-            var user = await _userService.GetUserByIdAsync(id);
-            if (user == null) return NotFound();
-            return Ok(user);
+            _createHandler = createHandler;
+            _updateHandler = updateHandler;
+            _deleteHandler = deleteHandler;
+            _getByIdHandler = getByIdHandler;
+            _getAllHandler = getAllHandler;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser(UserDTO userDto)
+        public async Task<IActionResult> Create(UserDTO userDto)
         {
-            await _userService.AddUserAsync(userDto);
-            return CreatedAtAction(nameof(CreateUser), new { id = userDto.Id }, userDto);
+            var command = new CreateUserCommand
+            {
+                Name = userDto.Name
+            };
+            await _createHandler.Handle(command);
+            return Ok();
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateUser(UserDTO user)
+        public async Task<IActionResult> Update(UserDTO userDto)
         {
-            await _userService.UpdateUserAsync(user);
-            return Ok(user);
+            var command = new UpdateUserCommand
+            {
+               Id = userDto.Id
+            };
+            await _updateHandler.Handle(command);
+            return Ok();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteUser(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            await _userService.DeleteUserAsync(id);
-            return Ok($"{{ \"User successfully deleted {id}\" }}");
+            var command = new DeleteUserCommand { Id = id };
+            await _deleteHandler.Handle(command);
+            return Ok();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var query = new GetUserByIdQuery { Id = id };
+            var result = await _getByIdHandler.Handle(query);
+            if (result == null) return NotFound();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var query = new GetAllUsersQuery();
+            var result = await _getAllHandler.Handle(query);
+            return Ok(result);
         }
     }
 }
