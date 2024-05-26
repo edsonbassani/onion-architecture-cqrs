@@ -1,4 +1,5 @@
-﻿using OnionArchitecture.TaskManager.Application.DTOs;
+﻿using OnionArchitecture.TaskManager.Application.Abstractions;
+using OnionArchitecture.TaskManager.Application.DTOs;
 using OnionArchitecture.TaskManager.Application.Features.Commands.ProjectTask;
 using OnionArchitecture.TaskManager.Application.Interfaces;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.ProjectTask
 {
-    public class UpdateProjectTaskCommandHandler
+    public class UpdateProjectTaskCommandHandler : ServiceBase
     {
         private readonly IProjectTaskService _projectTaskService;
 
@@ -20,20 +21,25 @@ namespace OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.Pro
 
         public async Task Handle(UpdateProjectTaskCommand command)
         {
-            var projectTaskDto = new ProjectTaskDTO
-            {
-                Id = command.Id,
-                Name = command.Name,
-                ParentTaskId = command.ParentTaskId,
-                ProjectId = command.ProjectId,
-                StartDate = command.StartDate,
-                DueDate = command.DueDate,
-                CompletionDate = command.CompletionDate,
-                Assignment = command.Assignment,
-                ModifiedAt = DateTime.Now,
-                ModifiedBy = 1
-            };
-            await _projectTaskService.UpdateProjectTaskAsync(projectTaskDto);
+            await ExecuteWithLoggingAsync(
+                async () =>
+                {
+                    var projectTaskDto = new ProjectTaskDTO
+                    {
+                        Id = command.Id,
+                        Name = command.Name,
+                        ParentTaskId = command.ParentTaskId,
+                        ProjectId = command.ProjectId,
+                        StartDate = command.StartDate,
+                        DueDate = command.DueDate,
+                        CompletionDate = command.CompletionDate,
+                        Assignment = command.Assignment,
+                        ModifiedAt = DateTime.Now,
+                        ModifiedBy = 1
+                    };
+                    await _projectTaskService.UpdateProjectTaskAsync(projectTaskDto);
+                }
+            );
         }
     }
 }

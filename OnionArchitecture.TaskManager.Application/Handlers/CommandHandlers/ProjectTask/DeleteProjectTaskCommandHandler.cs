@@ -1,4 +1,5 @@
-﻿using OnionArchitecture.TaskManager.Application.Features.Commands.ProjectTask;
+﻿using OnionArchitecture.TaskManager.Application.Abstractions;
+using OnionArchitecture.TaskManager.Application.Features.Commands.ProjectTask;
 using OnionArchitecture.TaskManager.Application.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.ProjectTask
 {
-    public class DeleteProjectTaskCommandHandler
+    public class DeleteProjectTaskCommandHandler : ServiceBase
     {
         private readonly IProjectTaskService _projectTaskService;
 
@@ -19,7 +20,12 @@ namespace OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.Pro
 
         public async Task Handle(DeleteProjectTaskCommand command)
         {
-            await _projectTaskService.DeleteProjectTaskAsync(command.Id);
+            await ExecuteWithLoggingAsync(
+                async () =>
+                {
+                    await _projectTaskService.DeleteProjectTaskAsync(command.Id);
+                }
+            );
         }
     }
 }

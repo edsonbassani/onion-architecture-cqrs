@@ -1,4 +1,5 @@
-﻿using OnionArchitecture.TaskManager.Application.DTOs;
+﻿using OnionArchitecture.TaskManager.Application.Abstractions;
+using OnionArchitecture.TaskManager.Application.DTOs;
 using OnionArchitecture.TaskManager.Application.Features.Commands.Project;
 using OnionArchitecture.TaskManager.Application.Interfaces;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.Project
 {
-    public class UpdateProjectCommandHandler
+    public class UpdateProjectCommandHandler : ServiceBase
     {
         private readonly IProjectService _projectService;
 
@@ -20,14 +21,19 @@ namespace OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.Pro
 
         public async Task Handle(UpdateProjectCommand command)
         {
-            var projectDto = new ProjectDTO
-            {
-                Id = command.Id,
-                Name = command.Name,
-                ModifiedAt = DateTime.Now,
-                ModifiedBy = 1
-            };
-            await _projectService.UpdateProjectAsync(projectDto);
+            await ExecuteWithLoggingAsync(
+                async () =>
+                {
+                    var projectDto = new ProjectDTO
+                    {
+                        Id = command.Id,
+                        Name = command.Name,
+                        ModifiedAt = DateTime.Now,
+                        ModifiedBy = 1
+                    };
+                    await _projectService.UpdateProjectAsync(projectDto);
+                }
+            );
         }
     }
 }

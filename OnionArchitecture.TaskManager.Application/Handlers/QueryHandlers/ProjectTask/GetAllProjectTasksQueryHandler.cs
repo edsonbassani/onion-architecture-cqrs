@@ -1,4 +1,5 @@
-﻿using OnionArchitecture.TaskManager.Application.DTOs;
+﻿using OnionArchitecture.TaskManager.Application.Abstractions;
+using OnionArchitecture.TaskManager.Application.DTOs;
 using OnionArchitecture.TaskManager.Application.Features.Queries.ProjectTask;
 using OnionArchitecture.TaskManager.Application.Interfaces;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OnionArchitecture.TaskManager.Application.Handlers.QueryHandlers.ProjectTask
 {
-    public class GetAllProjectTasksQueryHandler
+    public class GetAllProjectTasksQueryHandler : ServiceBase
     {
         private readonly IProjectTaskService _projectTaskService;
 
@@ -20,7 +21,10 @@ namespace OnionArchitecture.TaskManager.Application.Handlers.QueryHandlers.Proje
 
         public async Task<IEnumerable<ProjectTaskDTO>> Handle(GetAllProjectTasksQuery query)
         {
-            return await _projectTaskService.GetAllProjectTasksAsync(query.ProjectId);
+            return await ExecuteWithLoggingAsync(async () =>
+            {
+                return await _projectTaskService.GetAllProjectTasksAsync(query.ProjectId);
+            });
         }
     }
 }

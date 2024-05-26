@@ -1,4 +1,5 @@
-﻿using OnionArchitecture.TaskManager.Application.DTOs;
+﻿using OnionArchitecture.TaskManager.Application.Abstractions;
+using OnionArchitecture.TaskManager.Application.DTOs;
 using OnionArchitecture.TaskManager.Application.Features.Queries.User;
 using OnionArchitecture.TaskManager.Application.Interfaces;
 using OnionArchitecture.TaskManager.Application.Services;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace OnionArchitecture.TaskManager.Application.Handlers.QueryHandlers.User
 {
-    public class GetAllUsersQueryHandler
+    public class GetAllUsersQueryHandler : ServiceBase
     {
         private readonly IUserService _userService;
 
@@ -21,7 +22,7 @@ namespace OnionArchitecture.TaskManager.Application.Handlers.QueryHandlers.User
 
         public async Task<IEnumerable<UserDTO>> Handle(GetAllUsersQuery query)
         {
-            return await _userService.GetAllUsersAsync();
+            return await ExecuteWithLoggingAsync(_userService.GetAllUsersAsync);
         }
     }
 }

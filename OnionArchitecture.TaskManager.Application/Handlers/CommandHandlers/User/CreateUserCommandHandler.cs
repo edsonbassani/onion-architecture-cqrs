@@ -1,4 +1,5 @@
-﻿using OnionArchitecture.TaskManager.Application.DTOs;
+﻿using OnionArchitecture.TaskManager.Application.Abstractions;
+using OnionArchitecture.TaskManager.Application.DTOs;
 using OnionArchitecture.TaskManager.Application.Features.Commands.User;
 using OnionArchitecture.TaskManager.Application.Interfaces;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.User
 {
-    public class CreateUserCommandHandler
+    public class CreateUserCommandHandler : ServiceBase
     {
         private readonly IUserService _userService;
 
@@ -20,18 +21,23 @@ namespace OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.Use
 
         public async Task Handle(CreateUserCommand command)
         {
-            var userDto = new UserDTO
-            {
-                Name = command.Name,
-                Login = command.Login,
-                FirstName = command.FirstName,
-                Token = Guid.NewGuid().ToString(),
-                CreatedAt = DateTime.Now,
-                CreatedBy = 1,
-                ModifiedAt = DateTime.Now,
-                ModifiedBy = 1
-            };
-            await _userService.AddUserAsync(userDto);
+            await ExecuteWithLoggingAsync(
+                async () =>
+                {
+                    var userDto = new UserDTO
+                    {
+                        Name = command.Name,
+                        Login = command.Login,
+                        FirstName = command.FirstName,
+                        Token = Guid.NewGuid().ToString(),
+                        CreatedAt = DateTime.Now,
+                        CreatedBy = 1,
+                        ModifiedAt = DateTime.Now,
+                        ModifiedBy = 1
+                    };
+                    await _userService.AddUserAsync(userDto);
+                }
+            );
         }
     }
 }

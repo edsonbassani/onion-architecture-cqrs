@@ -1,4 +1,5 @@
-﻿using OnionArchitecture.TaskManager.Application.Features.Commands.User;
+﻿using OnionArchitecture.TaskManager.Application.Abstractions;
+using OnionArchitecture.TaskManager.Application.Features.Commands.User;
 using OnionArchitecture.TaskManager.Application.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.User
 {
-    public class DeleteUserCommandHandler
+    public class DeleteUserCommandHandler : ServiceBase
     {
         private readonly IUserService _userService;
 
@@ -19,7 +20,12 @@ namespace OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.Use
 
         public async Task Handle(DeleteUserCommand command)
         {
-            await _userService.DeleteUserAsync(command.Id);
+            await ExecuteWithLoggingAsync(
+                async () =>
+                {
+                    await _userService.DeleteUserAsync(command.Id);
+                }
+            );
         }
     }
 }
