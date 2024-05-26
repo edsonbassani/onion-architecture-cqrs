@@ -8,6 +8,6 @@ namespace OnionArchitecture.TaskManager.Application.Features.Queries.ProjectTask
 {
     public class GetProjectTaskByIdQuery
     {
-        public int TaskId { get; set; }
+        public int Id { get; set; }
     }
 }

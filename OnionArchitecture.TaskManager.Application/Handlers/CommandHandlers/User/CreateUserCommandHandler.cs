@@ -22,8 +22,13 @@ namespace OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.Use
         {
             var userDto = new UserDTO
             {
-                Id = command.Id,
-                Name = command.Name
+                Name = command.Name,
+                Login = command.Login,
+                FirstName = command.FirstName,
+                CreatedAt = DateTime.Now,
+                CreatedBy = 1,
+                ModifiedAt = DateTime.Now,
+                ModifiedBy = 1
             };
             await _userService.AddUserAsync(userDto);
         }

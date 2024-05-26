@@ -22,8 +22,11 @@ namespace OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.Pro
         {
             var projectDto = new ProjectDTO
             {
-                Id = command.ProjectId,
                 Name = command.Name,
+                CreatedBy = 1,
+                CreatedAt = DateTime.Now,
+                ModifiedAt = DateTime.Now,
+                ModifiedBy = 1
             };
             await _projectService.AddProjectAsync(projectDto);
         }

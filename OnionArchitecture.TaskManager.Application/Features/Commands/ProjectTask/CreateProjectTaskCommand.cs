@@ -8,8 +8,13 @@ namespace OnionArchitecture.TaskManager.Application.Features.Commands.ProjectTas
 {
     public class CreateProjectTaskCommand
     {
-        public int ProjectId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
+        public int ParentTaskId { get; set; }
+        public int ProjectId { get; set; }
+        public int Assignment { get; set; }
+        public DateTime CompletionDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime DueDate { get; set; }
     }
 }

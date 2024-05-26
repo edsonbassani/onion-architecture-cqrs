@@ -24,6 +24,15 @@ namespace OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.Pro
             {
                 ProjectId = command.ProjectId,
                 Name = command.Name,
+                ParentTaskId = command.ParentTaskId,
+                StartDate = command.StartDate,
+                DueDate = command.DueDate,
+                Assignment = command.Assignment,
+                CompletionDate = command.CompletionDate,
+                CreatedAt = DateTime.Now,
+                CreatedBy = 1,
+                ModifiedAt = DateTime.Now,
+                ModifiedBy = 1
             };
             await _projectTaskService.AddProjectTaskAsync(projectTaskDto);
         }

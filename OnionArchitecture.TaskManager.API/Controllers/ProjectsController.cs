@@ -68,7 +68,7 @@ namespace OnionArchitecture.TaskManager.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var query = new GetProjectByIdQuery { ProjectId = id };
+            var query = new GetProjectByIdQuery { Id = id };
             var result = await _getByIdHandler.Handle(query);
             if (result == null) return NotFound();
             return Ok(result);

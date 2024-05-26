@@ -34,9 +34,14 @@ namespace OnionArchitecture.TaskManager.API.Controllers
         public async Task<IActionResult> Create(ProjectTaskDTO projectTaskDto)
         {
             var command = new CreateProjectTaskCommand
-            {
-                Name = projectTaskDto.Name,
-                ProjectId = projectTaskDto.ProjectId
+            { 
+              Name = projectTaskDto.Name,
+              ProjectId = projectTaskDto.ProjectId,
+              Assignment = projectTaskDto.Assignment,
+              CompletionDate = projectTaskDto.CompletionDate,
+              DueDate = projectTaskDto.DueDate,
+              ParentTaskId = projectTaskDto.ParentTaskId,
+              StartDate = projectTaskDto.StartDate
             };
             await _createHandler.Handle(command);
             return Ok();
@@ -47,7 +52,14 @@ namespace OnionArchitecture.TaskManager.API.Controllers
         {
             var command = new UpdateProjectTaskCommand
             {
-                 TaskId = projectTaskDto.Id
+                Id = projectTaskDto.Id,
+                Name = projectTaskDto.Name,
+                ProjectId = projectTaskDto.ProjectId,
+                Assignment = projectTaskDto.Assignment,
+                CompletionDate = projectTaskDto.CompletionDate,
+                DueDate = projectTaskDto.DueDate,
+                ParentTaskId = projectTaskDto.ParentTaskId,
+                StartDate = projectTaskDto.StartDate
             };
             await _updateHandler.Handle(command);
             return Ok();
@@ -56,7 +68,7 @@ namespace OnionArchitecture.TaskManager.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var command = new DeleteProjectTaskCommand { TaskId = id };
+            var command = new DeleteProjectTaskCommand { Id = id };
             await _deleteHandler.Handle(command);
             return Ok();
         }
@@ -64,7 +76,7 @@ namespace OnionArchitecture.TaskManager.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var query = new GetProjectTaskByIdQuery {  TaskId = id };
+            var query = new GetProjectTaskByIdQuery {  Id = id };
             var result = await _getByIdHandler.Handle(query);
             if (result == null) return NotFound();
             return Ok(result);

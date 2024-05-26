@@ -20,7 +20,7 @@ namespace OnionArchitecture.TaskManager.Application.Handlers.QueryHandlers.Proje
 
         public async Task<ProjectDTO> Handle(GetProjectByIdQuery query)
         {
-            return await _projectService.GetProjectByIdAsync(query.ProjectId);
+            return await _projectService.GetProjectByIdAsync(query.Id);
         }
     }
 }

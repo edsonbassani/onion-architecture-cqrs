@@ -47,7 +47,10 @@ namespace OnionArchitecture.TaskManager.API.Controllers
         {
             var command = new UpdateUserCommand
             {
-               Id = userDto.Id
+                Id = userDto.Id,
+                Name = userDto.Name,
+                FirstName = userDto.FirstName,
+                Login = userDto.Login
             };
             await _updateHandler.Handle(command);
             return Ok();

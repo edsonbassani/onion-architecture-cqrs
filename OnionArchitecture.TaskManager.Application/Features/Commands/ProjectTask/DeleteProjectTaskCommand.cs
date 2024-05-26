@@ -8,6 +8,6 @@ namespace OnionArchitecture.TaskManager.Application.Features.Commands.ProjectTas
 {
     public class DeleteProjectTaskCommand
     {
-        public int TaskId { get; set; }
+        public int Id { get; set; }
     }
 }

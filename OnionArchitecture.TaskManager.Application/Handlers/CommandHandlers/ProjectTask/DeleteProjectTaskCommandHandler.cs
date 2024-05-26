@@ -19,7 +19,7 @@ namespace OnionArchitecture.TaskManager.Application.Handlers.CommandHandlers.Pro
 
         public async Task Handle(DeleteProjectTaskCommand command)
         {
-            await _projectTaskService.DeleteProjectTaskAsync(command.TaskId);
+            await _projectTaskService.DeleteProjectTaskAsync(command.Id);
         }
     }
 }
